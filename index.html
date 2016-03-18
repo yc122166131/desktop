@@ -1,0 +1,464 @@
+`<!DOCTYPE html>
+<html>
+<head>
+	<!--声明当前页面的编码集:charset=gbk,gb2312(中文编码),utf-8国际编码-->
+	<mata http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<!--声明当前页面的三个要素-->
+	<title>java开发WebQQ轻应用桌面级系统</title>
+	<meta name="Keywords" content="关键词，关键词">
+	<meta name="description" content="">
+
+	<!--css/js-->
+
+	<style type="text/css">
+		/*浏览器内核不一样，所以要有以下设置*/
+		*{margin: 0;padding: 0;}
+		body{background: url("img/bg1.jpg");
+			background-repeat: no-repeat;
+			background-position: top center;
+			background-size: cover;
+			font-size: 12px;
+			font-family: "微软雅黑";
+			color: #666;
+			overflow: hidden;
+			width: 100%;
+			height: 100%;
+		}
+
+		/*desk start*/
+		.desk{width: 200px;background: #e5e5e5;box-shadow: inset 0 0 1em #000;position: absolute;display: none;z-index: 999;}
+		.desk ul li{list-style: none;border-bottom:1px solid #ccc ;line-height: 34px; font-size: 14px;padding-left: 10px;}
+		.desk ul li:hover{background:#647e7c;color: #fff; transition:all 0.5s ease;transform:scale(1.06);cursor:pointer;}
+		.desk ul li:before{content: "★";padding-right:5px;font-size: 14px;}
+		.desk ul .newcreate{width: 200px;border-bottom:1px solid #ccc ;font-size: 14px;padding: 1px;line-height: 34px;}
+		.desk ul .newcreate .subdesk{width: 200px;background: #e5e5e5;box-shadow: inset 0px 2px 1em #000;position: absolute;top: 208px;left: 196px;display: none;}
+		/*end desk*/
+
+
+		/*bianqian start*/
+		.ball{width: 200px;height: 200px;background: none;position: absolute;right: 510px;bottom: 100px;opacity: 0;}
+		/*end bianqian*/
+
+
+		/*backgroundExhibition start(切换背景)*/
+		#backgroundExhibition {  background: #F90; font-weight: 900; color: #FFF;  display: block; width: 1000px; height: 600px; background: url(img/xk.jpg);box-shadow: 0 0 2em blue;border-radius: 50px;margin: 75px auto;position: relative;display: none;} 
+		#backgroundExhibition .cl{width: 64px;height: 64px;position: absolute;right: 15px;top: 15px;}
+		#backgroundExhibition .cl:hover{box-shadow:  0 0 2em #111;border-radius: 30px;}
+
+		#backgroundExhibition .pics{padding-left: 50px;padding-top: 160px;position: absolute;}
+		#backgroundExhibition .pics ul li{width: 150px;height: 80px;border-radius: 10px;list-style: none;float: left;border:1px solid gold;}
+		#backgroundExhibition .pics ul li.special{width: 300px;height: 160px;border-radius: 10px;list-style: none;float: left;border:1px solid gold;}
+		
+		#backgroundExhibition .pics ul li:hover{transition:all 1s ease;box-shadow: 0 0 2em #111;transform:rotateY(10deg) scale(1.05);cursor:pointer;}
+		/*end backgroundExhibition*/
+
+
+		.musicIcon{width: 100px;height: 100px;border-radius: 100px;position:absolute;left: 10px;top:10px;}
+		.musicIcon:hover{transition:all 1s ease;box-shadow: 0 0 2em #ccc;transform:scale(1.1) skewY(-5deg);cursor: pointer;}
+		.musicExhibition{width: 1000px; height: 600px;background: url("img/music/bg.jpg") no-repeat ;box-shadow: inset 0 0 2em #111;position: absolute;top:95px;left:340px;display: none;border-radius: 50px;}
+		.musicExhibition ul li {list-style: none;margin: 60px;}
+		.musicExhibition ul li img:hover{transition:all 1s ease;transform:scale(1.2) ;cursor: pointer;}
+		.musicExhibition ul li img{width: 200px;height: 200px;border-radius: 200px;float: left;margin: 40px;}
+		.musicExhibition .musicExhibition_close{position: absolute;right: 10px;top: 10px;}
+		
+
+		/*otherStyle start*/
+		.outsideyangshi{background:#647e7c;cursor:pointer;}
+		.text{font-size: 30px;color: #fff;position: absolute;top: 100px;}
+		.odiv3{width: 190px;height: 190px;background: url(img/bq2.png) no-repeat;background-size: cover;position: absolute;font-size: 16px;font-family: "楷体";color: blue;line-height: 40px;word-wrap:break-word ;}
+		.odiv3 textarea{font-size: 16px;font-family: "楷体";color: blue;line-height: 40px;font-weight: bold;}
+		.odiv3:hover{cursor: pointer;}
+		.bq_text{width: 190px;height: 160px;margin-top: 30px;background: none;line-height: 30px;}
+		/*end otherStyle*/
+
+		@keyframes bgLeaveShow{
+
+		    0%{transform:none;perspective: 300;}
+		    10%{transform:rotateX(-70deg) rotateY(10deg) rotateZ(10deg);perspective: 300;}
+			30%{transform:rotateX(-70deg) rotateY(10deg) rotateZ(10deg) 
+translateY(150px) scale(0.4);perspective: 300;}
+			50%{transform:rotateX(-70deg) rotateY(10deg) rotateZ(10deg) 
+
+translateY(-50px) scale(0.4);perspective: 300;}
+			100%{transform:rotateX(-70deg) rotateY(10deg) rotateZ(10deg) 
+
+translateY(75px) translateX(1500px) scale(0.4);;perspective: 300;}
+
+		}
+		.bgLeaveShow{
+			animation-name:bgLeaveShow;
+			animation-timing-function:ease-in-out;
+			animation-duration:3s;
+			animation-fill-mode:forwards;
+
+		}
+
+		@keyframes bgEnterShow{
+				0%{transform:scale(0.6)}
+				40%{transform:scale(0.8)}
+				60%{transform:scale(0.4)}
+				100%{transform:scale(1)}
+		}
+
+		.bgEnterShow{
+					animation-name:bgEnterShow;
+					animation-timing-function:ease-in-out;
+					animation-duration:1s;
+		}
+
+
+		@keyframes bqShow{
+
+			0%{transform:rotate(-170deg);opacity: 0;}
+			100%{transform:rotate(0deg);opacity: 1;}
+
+		}
+		.bqShow{
+
+			animation-name:bqShow;
+			animation-iteration-count:1;
+			animation-timing-function:ease-in-out;
+			animation-duration:1s;
+
+		}
+
+		@keyframes bqLeave{
+
+			0%{transform:scale(0.2) rotate(0deg);opacity: 1;}
+			30%{transform:scale(1.2) rotate(60deg);opacity: 1;}
+			60%{transform:scale(0.7) rotate(100deg);opacity: 1;}
+			100%{transform:scale(1) rotate(160deg);opacity: 0;}
+
+		}
+		.bqLeave{
+
+			animation-name:bqLeave;
+			animation-iteration-count:1;
+			animation-timing-function:ease;
+			animation-duration:1s;
+			animation-fill-mode:forwards;
+		}
+
+		@keyframes MusicExhibitionShow {
+			  from, 60%, 75%, 90%, to {
+			    -webkit-animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+			    animation-timing-function: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+			  }
+
+			  0% {
+			    opacity: 0;
+			    -webkit-transform: translate3d(0, -3000px, 0);
+			    transform: translate3d(0, -3000px, 0);
+			  }
+
+			  60% {
+			    opacity: 1;
+			    -webkit-transform: translate3d(0, 25px, 0);
+			    transform: translate3d(0, 25px, 0);
+			  }
+
+			  75% {
+			    -webkit-transform: translate3d(0, -10px, 0);
+			    transform: translate3d(0, -10px, 0);
+			  }
+
+			  90% {
+			    -webkit-transform: translate3d(0, 5px, 0);
+			    transform: translate3d(0, 5px, 0);
+			  }
+
+			  to {
+			    -webkit-transform: none;
+			    transform: none;
+			  }
+			}
+
+			.MusicExhibitionShow {
+			  -webkit-animation-name: MusicExhibitionShow;
+			  animation-name: MusicExhibitionShow;
+			  animation-duration:1s;
+			}
+	</style>
+
+
+</head>
+<body>
+
+	<!--desk start-->
+	<div class="desk" id="desk">
+		<ul>
+			<li onclick="Menu.open()">打开</li>
+			<li id="addbq">添加便签</li>
+			<li onclick="Menu.clear()">清空</li>
+			<li onclick="Menu.createFile()">刷新</li>
+			<li onclick="upload()">上传资料</li>
+			<li onclick="Menu.changeBackground()">更换背景</li>
+			<div class="newcreate"  id="newcreate">&nbsp;&nbsp;★&nbsp;新建&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;▷
+				<div class="subdesk" id="subdesk">
+						<ul>
+							<li onclick="createFolder()">新建文件夹</li>
+							<li onclick="createFile()">新建文件</li>
+							<li onclick="createPic()">新建图片</li>
+						</ul>
+				</div>
+			</div>
+			<li>注销</li>
+		</ul>
+	</div>
+	<!--end desk-->
+	
+
+	
+
+	<!--bianqian start-->
+	<div class="ball_managemant">
+	
+	</div>
+	<!--end bianqian-->
+
+	
+	<!--backgroundExhibition start-->
+	<div id="backgroundExhibition">
+		
+		<div class="pics">
+			<ul>
+				<li class="special"><img src="img/bg0.jpg" width="300px" height="160px"/></li>
+				<li><img src="img/bg1.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg2.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg3.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg4.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg5.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg6.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg7.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg8.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg9.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg10.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg11.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg12.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg13.jpg" width="150px" height="80px"/></li>
+				<li><img src="img/bg14.jpg" width="150px" height="80px"/></li>
+			</ul>
+		</div>
+		<div  class="cl">
+			<img src="img/close1.png" width="64px" height="64px" />
+		</div> 
+	</div>
+	<!--end backgroundExhibition-->
+
+
+	<div class="musicIcon" id="musicIcon">
+		<img src="img/music/icon1.png" width="100px" height="100px">
+	</div>
+
+	<div class="musicExhibition" id="musicExhibition">
+		<ul>
+			<li><img src="img/music/tx1.jpg" width="200px" height="200px"/></li>
+			<li><img src="img/music/tx2.jpg" width="200px" height="200px"/></li>
+			<li><img src="img/music/tx3.jpg" width="200px" height="200px"/></li>
+		</ul>
+		<div  class="musicExhibition_close">
+			<img src="img/close1.png" width="64px" height="64px" />
+		</div> 
+	</div>
+	
+
+	<!--<p class="text"></p>-->
+	<script type="text/javascript" src="js/jquery-1.8.2.min.js"></script>
+	<script type="text/javascript" src="js/drag.js"></script>
+	<script type="text/javascript">
+
+		//背景更新模块的关闭按钮
+		$(".cl").click(function(){
+				$("#backgroundExhibition").removeClass("bgEnterShow");
+				$("#backgroundExhibition").show().addClass("bgLeaveShow");
+		});
+
+		//音乐展示模块的关闭按钮
+		$(".musicExhibition_close").click(function(){
+				$("#musicExhibition").addClass("bgLeaveShow");
+				$("#musicExhibition").removeClass("MusicExhibitionShow");
+				
+		});
+
+		//焕肤效果(更换body的背景URL)
+		$(".pics ul li").click(function(){
+			var _index = $(this).index();
+			var rev = "img/bg"+_index+".jpg";
+			$("body").css("background",'url(' + rev + ')' );
+			$("body").css("background-size",'cover');
+			//将切换的当前皮肤存起来！（下次打开的时候去加载他）
+			var storage = window.localStorage;
+			storage.setItem("currentBackground",rev);
+		});
+
+		//ジェクエり入口
+		$(document).ready(function(){
+
+			var rev = ""; //定义一个存储背景图片的变量
+			var storage = window.localStorage;
+			if (!storage.getItem("currentBackground")){
+				storage.setItem("currentBackground","img/bg1.jpg");
+				 rev = "img/bg1.jpg";
+			}else{
+				 rev = storage.getItem("currentBackground");
+			}
+			//第一次加载的时候给他赋上保存的背景图片
+			$("body").css("background",'url(' + rev + ')' );
+			$("body").css("background-size",'cover');
+
+
+			//右键菜单的新建-->会弹出subdesk(outsideyangshi自定义了一个样式和sibling是一样的。掩饰一下神马的！！你懂的！)
+			$(".desk ul .newcreate").hover(function(){
+				$(this).addClass("outsideyangshi");
+				$(".subdesk").show();
+			},function(){
+				$(this).removeClass("outsideyangshi");
+				$(".subdesk").hide();
+			});
+
+			var i = 0 ; //计数器
+			yc(addbq).on("click",function(e){
+
+				var ev = window.event || e;
+				var x = ev.clientX;
+				var y = ev.clientY;
+				var oo = $("<div class='odiv3 bqShow'  id='odiv"+i+"'><textarea row='3' class='bq_text'></textarea></div>");
+				$(".ball_managemant").append(oo);
+				init_animate(x,y,i);
+				i++;
+			});
+			
+			function init_animate(x,y,i){
+
+				var bianliang = "odiv"+i;
+				var top = 0;
+				var time = 1000;
+				$("#"+bianliang).css({left:"0px",top:y+"px"});
+				$("#"+bianliang).animate({left:x+"px",top:y+"px"},time,function(){
+
+				});
+			}
+
+			$(".musicIcon").dblclick(function(){
+
+				$(".musicExhibition").show().addClass("MusicExhibitionShow");
+				$(".musicExhibition").removeClass("bgLeaveShow");
+
+			});
+
+			mydrag("musicIcon");
+
+		});
+		
+		
+
+
+		//屏蔽右键
+		document.oncontextmenu = function(){
+			return false;
+		}
+
+
+		/*自己封装自定义一个类似jquery的框架*/
+		/*用yc来做开头标志,若用$ 会和Jquery冲突*/
+		var yc = function(id){
+
+			var dom = document.getElementById(id);
+			if(typeof id === "object"){
+				dom = id ;
+			};
+			return {
+				on:function(event,callback){
+					dom.addEventListener(event,callback,false);
+				},
+				css:function(opts){
+					for(var k in opts){
+						dom["style"][k] = opts[k]+"px";
+					}
+				},
+				hide:function(){
+					dom.style.display = "none";
+				},
+				show:function(){
+					dom.style.display = "inline-block";
+				}
+
+			}
+
+		}
+
+
+		yc(document).on("mousedown",function(e){
+
+					var x = e.clientX || e.pageX;
+					var y = e.clientY || e.pageY;
+					
+					var code = e.button; //获取鼠标左0，右2，滚轮1
+					if(code == 2){
+						document.getElementById("desk").style.display = 'inline-block';
+						yc("desk").css({left:x,top:y});
+						/*被上面那行自己封装的代码代替了
+						document.getElementById("desk").style.left = x +'px';
+						document.getElementById("desk").style.top = y +'px';
+						*/
+					}
+					/*if(code == 0){
+						document.getElementById("desk").style.visibility = 'hidden';
+					}*/
+
+					
+
+					
+		});
+
+		 document.onclick = function (){  
+		        document.getElementById("desk").style.display = "none"      
+		 };  
+
+		
+		
+		var Menu = (function(){
+
+			return{
+				open:function(){
+					alert(1);
+					document.getElementById("desk").style.display = 'none';
+				},
+				changeBackground:function(){
+					$("#backgroundExhibition").removeClass("bgLeaveShow");
+					$("#backgroundExhibition").show().addClass("bgEnterShow");
+
+				},
+				clear:function(){
+					$(".odiv3").each(function(){
+
+						$(this).addClass("bqLeave");
+
+					});
+					
+				},
+				createFile:function(){
+					$(".odiv3").click(function(){
+						var _id = $(this).attr("id");
+						mydrag(_id);
+					});
+				
+				},
+				createPic:function(){
+
+				},
+				init:function(){
+
+					
+				}
+			};
+
+		})();
+			
+			
+
+	</script>
+
+
+</body>
+</html>>
